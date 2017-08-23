@@ -13,10 +13,21 @@
     "funbox-test-live": "./bin/funbox-test-live"
   },
   "dependencies": {
-    "casper-chai": "0.3.0",
+    "babel-core": "6.24.1",
+    "bemto.jade": "1.0.3",
     "chai": "3.5.0",
+    "crapify": "1.2.0",
     "expect": "1.20.2",
+    "filewatcher": "3.0.1",
+    "funbox-frontend-env-webpack": "*",
+    "glob": "7.1.1",
+    "jade": "1.11.0",
     "jasmine-core": "2.5.2",
-    "mocha": "3.2.0"
+    "jquery": "3.1.1",
+    "jsdom": "9.8.3",
+    "lodash": "4.17.4",
+    "mocha": "3.2.0",
+    "moment": "2.17.1",
+    "q": "1.4.1"
   }
 }

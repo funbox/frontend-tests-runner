@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+WORKING_DIRECTORY=`pwd`
+node $WORKING_DIRECTORY/node_modules/frontend-tests-runner/testing.runner.js ./config/testing.runner.conf.js ./config/webpack.app.test.js
