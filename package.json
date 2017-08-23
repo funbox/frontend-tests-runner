@@ -1,0 +1,22 @@
+{
+  "name": "frontend-tests-runner",
+  "version": "1.0.0",
+  "description": "Startign unit- and e2e-tests",
+  "main": "testing.base.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "funbox-test": "./bin/funbox-test",
+    "funbox-test-live": "./bin/funbox-test-live"
+  },
+  "dependencies": {
+    "casper-chai": "0.3.0",
+    "chai": "3.5.0",
+    "expect": "1.20.2",
+    "jasmine-core": "2.5.2",
+    "mocha": "3.2.0"
+  }
+}
