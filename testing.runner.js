@@ -1,10 +1,10 @@
 var _ = require('lodash');
 var path = require('path');
 var fs = require('fs');
-var util = require('../util');
 var frontendEnv = require('funbox-frontend-env-webpack');
 var webpack = frontendEnv.webpack;
 var WebpackDevServer = frontendEnv.webpackDevServer;
+var rebuildInProgressFile = frontendEnv.rebuildInProgressFile;
 var config = getConfigFromFile(process.argv[3]);
 var devServerPort = config.devServer.port;
 var child = require('child_process');
@@ -183,9 +183,9 @@ function initializeWatching() {
     return;
   }
 
-  fs.watch(path.dirname(util.rebuildInProgressFile), (eventType, filename) => {
-    if (eventType === 'rename' && filename === path.basename(util.rebuildInProgressFile)) {
-      if (fs.existsSync(util.rebuildInProgressFile)) {
+  fs.watch(path.dirname(rebuildInProgressFile), (eventType, filename) => {
+    if (eventType === 'rename' && filename === path.basename(rebuildInProgressFile)) {
+      if (fs.existsSync(rebuildInProgressFile)) {
         if (childProcess && childProcess.connected) {
           console.log('ОСТАНОВКА ТЕСТИРОВАНИЯ');
           process.kill(childProcess.pid);
