@@ -1,12 +1,10 @@
 var _ = require('lodash');
 var path = require('path');
 var fs = require('fs');
-var frontendEnv = require('funbox-frontend-env-webpack');
-var webpack = frontendEnv.webpack;
-var WebpackDevServer = frontendEnv.webpackDevServer;
-var rebuildInProgressFile = frontendEnv.rebuildInProgressFile;
+var webpack = require('webpack');
+var WebpackDevServer = require('webpack-dev-server');
 var config = getConfigFromFile(process.argv[3]);
-var devServerPort = config.devServer.port;
+var devServerPort = config.devServer.port || 8080;
 var child = require('child_process');
 var filewatcher = require('filewatcher');
 var glob = require('glob');
@@ -183,20 +181,16 @@ function initializeWatching() {
     return;
   }
 
-  fs.watch(path.dirname(rebuildInProgressFile), (eventType, filename) => {
-    if (eventType === 'rename' && filename === path.basename(rebuildInProgressFile)) {
-      if (fs.existsSync(rebuildInProgressFile)) {
-        if (childProcess && childProcess.connected) {
-          console.log('ОСТАНОВКА ТЕСТИРОВАНИЯ');
-          process.kill(childProcess.pid);
-        }
-        console.log('Ожидаем окончания пересборки проекта...');
-      } else {
-        console.log('Пересборка проекта окончена, перезапускаем тесты');
-        startTests();
-      }
+  config.trackProgress(() => {
+    if (childProcess && childProcess.connected) {
+      console.log('ОСТАНОВКА ТЕСТИРОВАНИЯ');
+      process.kill(childProcess.pid);
     }
-  });
+    console.log('Ожидаем окончания пересборки проекта...');
+  }, () => {
+    console.log('Пересборка проекта окончена, перезапускаем тесты');
+    startTests(); 
+  })
 
   // Отслеживание изменений файлов тестов
   var testsFileWatcher = filewatcher();
