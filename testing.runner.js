@@ -12,13 +12,7 @@ var q = require('q');
 
 var childProcess;
 
-if (getConfig().runners.indexOf('e2e') >= 0) {
-  defineMode();
-}
-else {
-  initializeWatching();
-  startTests();
-}
+defineMode();
 
 function getConfigFromFile(relativePathToConfig) {
   var fullPathToConfig = path.join(process.cwd(), relativePathToConfig);
@@ -40,8 +34,7 @@ function getArgs(names) {
 
 function getConfigFromCommandLine() {
   var config = {};
-  var raw = getArgs(['runners', 'no-selenium', 'mode']);
-  raw['runners'] && (config.runners = raw['runners'].split(','));
+  var raw = getArgs(['no-selenium', 'mode']);
   raw['mode'] && (config.mode = raw['mode']);
   config.noSelenium = !_.isUndefined(raw['no-selenium']);
   return config;
@@ -51,14 +44,13 @@ function getConfig() {
   return _.defaults(getConfigFromCommandLine(), getConfigFromFile(process.argv[2]));
 }
 
-function startTests(test, type, stopProcess) {
+function startTests(test, stopProcess) {
   childProcess = child.fork(__dirname + '/testing.base', process.argv.slice(2), {
     cwd: process.cwd()
   });
 
   var config = getConfig();
   config.test = test;
-  config.type = type;
   config.devServerPort = devServerPort;
 
   childProcess.send({
@@ -200,17 +192,11 @@ function initializeWatching() {
   });
 
   testsFileWatcher.on('change', (file, stat) => {
-    var testType = file.indexOf('.e2e.') !== -1 ? 'e2e' : 'unit';
-
-    if (config.runners.indexOf(testType) === -1) {
-      return;
-    }
-
     if (childProcess && childProcess.connected) {
       console.log('ОСТАНОВКА ТЕСТИРОВАНИЯ');
       process.kill(childProcess.pid);
     }
 
-    startTests(file, testType);
+    startTests(file);
   });
 }

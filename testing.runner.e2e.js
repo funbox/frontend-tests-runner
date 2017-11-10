@@ -157,7 +157,7 @@ function runTests(options, done) {
   if (options.test) {
     tests.push(options.test);
   } else {
-    const dir = path.join(options.projectBasePath, 'src/tests/e2e');
+    const dir = path.join(options.projectBasePath, 'src/tests');
     fs.readdirSync(dir).forEach((f) => {
       if (/\.e2e\.test\.js$/.exec(f)) {
         tests.push(path.join(dir, f));
