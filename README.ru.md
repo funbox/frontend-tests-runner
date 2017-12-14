@@ -1,40 +1,81 @@
-# frontend-tests-runner
+# funbox-frontend-tests-runner
 
-## Описание библиотеки
+funbox-frontend-tests-runner — это библиотека, позволяющая запускать mocha-тесты в несколько потоков и с поддержкой live-режима.
 
-frontend-tests-runner — это библиотека, позволяющая запускать е2е тесты.  
+Скрипты запуска тестов были выделены из окружения для проектов на Angular 1 в отдельную библиотеку для более гибкого подхода к тестированию. Это позволяет разработчикам иметь возможность запускать тесты привычным им образом без привязки к фреймворку или средству сборки. Библиотека в свою очередь не знает какого типа тесты она запускает (unit- или e2e-тесты), не знает как запустить проект и на каком порту проект будет работать, что позволяет абстрагироваться от системы сборки (webpack/gulp и т.п.).
 
-Скрипты запуска тестов были выделены из окружения для проектов на Angular 1 в отдельную библиотеку для более гибкого подхода к тестированию. 
-Это позволяет разработчикам выбирать для своих проектов какой фреймворк для тестирования использовать - дефолтный или какой-то свой и наоборот, подключать данную библиотеку к другим окружениям.
+Библиотека подключается в проект следующим образом:
 
-Данная библиотека работает следующим образом: ищет файлы с тестами в заданной директории, 
-поднимает сервер и на нём запускает проект и Mocha, в которую передаёт по одному найденные тесты. 
-
-При запуске в режиме 'live' начинают отслеживаться изменения файлов проекта и тестов. При изменении файла проекта все тесты перезапускаются,
-а при изменении файла теста, перезапускются тесты из этого файла.
-
-## Подключение
-`npm install --save frontend-tests-runner`
-
-Добавить в package.json в объект `scripts` две строки:
-```` 
-"test": "node_modules/.bin/funbox-test", // обычный режим
-"test:live": "node_modules/.bin/funbox-test-live", // live-режим
-````
-В корне папки проекта в папку config добавить два файла:
-
-**testing.runner.conf.js** с параметрами тестирования.
-Примерное содержимое: 
-````
+```javascript
+// tests.config.js
 module.exports = {
-  projectBasePath: __dirname + '/..', // путь к проекту
-  runners: ['e2e'] // какие запускаются тесты. в данном случае е2е
-};
-````
+  parallelTestsCount: 2,
+  live: false,
+  separatedLogs: true,
+}
 
-**webpack.app.test.js** с настройками вебпака для запуска Webpack dev server:
-* Reference: http://webpack.github.io/docs/configuration.html#devserver
-* Reference: http://webpack.github.io/docs/webpack-dev-server.html
+// tests.live.config.js
+module.exports = {
+  parallelTestsCount: 2,
+  live: true,
+  separatedLogs: true,
+}
 
- ## Live-режим
- Для работы live-режима необходимо установить плагин `funbox-rebuild-in-progress-webpack-plugin`. 
+// tests.runner.js
+
+const Runner = require('funbox-frontend-tests-runner');
+// Предполагаем что в проекте используется окружение funbox-frontend-env-webpack
+const webpackConfig = require('webpack.app.test.js');
+
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const EventEmitter = require('events');
+const fs = require('fs');
+
+if (process.argv !== 3) {
+  console.log("Usage: tests.runner.js <config>");
+  process.exit(1);
+}
+
+const config = require(process.argv[2]);
+
+const project = new EventEmitter();
+
+project.build = () => {
+  return new Promise((resolve, reject) => {
+    // В данном примере в качестве средства сборки в проекте используется webpack
+    new WebpackDevServer(webpack(webpackConfig), webpackConfig.devServer).listen(webpackConfig.devServer.port, 'localhost', (err) => {
+      if (err) {
+        console.log('Ошибка сборки: ' + err);
+        process.exit(1);
+      }
+
+      let started = false;
+      process.stdout.on('data', (data) => {
+        if (!started && data.indexOf('webpack: Compiled successfully.') > -1) {
+          started = true;
+          resolve();
+        }
+      });
+    });
+  });
+}
+
+// В данном примере для реализации работы live-режима использует плагин funbox-rebuild-in-progress-webpack-plugin
+const rebuildInProgressFile = 'node_modules/.rebuildInProgress';
+
+fs.watch(path.dirname(rebuildInProgressFile), (eventType, filename) => {
+  if (eventType === 'rename' && filename === path.basename(rebuildInProgressFile)) {
+    if (fs.existsSync(rebuildInProgressFile)) {
+      project.emit('buildStart');
+    } else {
+      project.emit('buildFinish');
+    }
+  }
+});
+
+config.project = project;
+
+const runner = new Runner(config);
+runner.start();
+```

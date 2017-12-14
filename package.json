@@ -1,27 +1,16 @@
 {
-  "name": "frontend-tests-runner",
-  "version": "1.0.0",
-  "description": "Startign unit- and e2e-tests",
-  "main": "testing.base.js",
+  "name": "funbox-frontend-tests-runner",
+  "version": "0.1.0",
+  "description": "Средство прогона тестов",
+  "main": "SupervisedTestsRunner.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "bin": {
-    "funbox-test": "./bin/funbox-test",
-    "funbox-test-live": "./bin/funbox-test-live"
-  },
+  "author": "FunBox",
+  "license": "Proprietary",
   "dependencies": {
-    "chai": "3.5.0",
-    "crapify": "1.2.0",
-    "expect": "1.20.2",
     "filewatcher": "3.0.1",
     "glob": "7.1.1",
-    "lodash": "4.17.4",
-    "mocha": "3.2.0",
-    "q": "1.4.1",
-    "webpack": "2.7.0",
-    "webpack-dev-server": "2.6.1"
+    "mocha": "^3.2.0"
   }
 }
