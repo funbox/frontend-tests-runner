@@ -1,29 +1,16 @@
 const childProcess = require('child_process');
 const filewatcher = require('filewatcher');
 const globSync = require('glob').sync;
-import TestsRunner from "./TestsRunner";
+const TestsRunner = require('./TestsRunner');
 
-/*
- *  ожидаемый формат конфига от проекта:
- *  {
- *    parallelTestsCount: 2,
- *    live: true,
- *    separatedLogs: true,
- *    project: {
- *      build: () => new Promise((resolve, reject) => { }),
- *      addListener(eventName) { названия событий buildStart и buildFinish }
- *    }
- *  }
- *
- */
-
-export default class SupervisedTestsRunner {
+class SupervisedTestsRunner {
   constructor(config) {
     this.config = config;
     this.testsRunner = new TestsRunner(config);
   }
 
   start() {
+    let result = this.config.project.build().then(() => this.startAllTests());
     if (this.config.live) {
       this.config.project.addListener("buildStart", () => {
         this.testsRunner.stop();
@@ -32,9 +19,11 @@ export default class SupervisedTestsRunner {
         this.startAllTests();
       });
       this.trackFileChanges();
+    } else {
+      result = result.then((code) => { process.exit(code); });
     }
 
-    this.config.project.build().then(() => this.startAllTests());
+    return result;
   }
 
   trackFileChanges() {
@@ -45,10 +34,8 @@ export default class SupervisedTestsRunner {
     });
 
     watcher.on('change', (file, stat) => {
-      // TODO обработать ситуацию когда файл удалился или добавился
-      // TODO что делать если изменился один файл и он еще прогоняется когда изменился другой
       console.log(`Изменение файла ${file}`);
-      calculateTestFiles().then((files) => {
+      this.calculateTestFiles().then((files) => {
         if (files.indexOf(file) > -1) {
           this.testsRunner.runTestFiles([file]);
         }
@@ -57,25 +44,21 @@ export default class SupervisedTestsRunner {
   }
 
   startAllTests() {
-    calculateTestFiles().then((files) => {
-      this.testsRunner.runTestFiles(files);
-    });
+    return this.calculateTestFiles().then((files) => this.testsRunner.runTestFiles(files));
   }
 
   calculateTestFiles() {
     const calc = childProcess.fork(`${__dirname}/TestFilesCalculator.js`);
 
     return new Promise((resolve) => {
-      calc.on('message', (result) => {
+      calc.on('message', (msg) => {
         calc.kill();
-        resolve(result);
+        resolve(msg.result);
       });
 
-      calc.send(this.config.testFiles);
+      calc.send({filesGlob: this.config.testFiles});
     });
   }
-
-  trackFileChanges() {
-    throw 'NotImplemented';
-  }
 }
+
+module.exports = SupervisedTestsRunner;

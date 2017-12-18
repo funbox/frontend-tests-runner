@@ -1,4 +1,5 @@
 const globSync = require('glob').sync;
+const path = require('path');
 
 const emptyFn = () => {};
 global['before'] = emptyFn;
@@ -14,8 +15,8 @@ global['describe'].skip = emptyFn;
 let filterEnabled = false;
 const filteredTestFiles = [];
 
-process.on('message', (filesGlob) => {
-  const testFiles = globSync(filesGlob);
+process.on('message', (msg) => {
+  const testFiles = globSync(msg.filesGlob);
   testFiles.forEach((testFile) => {
     let filter = false;
 
@@ -29,7 +30,7 @@ process.on('message', (filesGlob) => {
     }
 
     try {
-      require(testFile);
+      require(path.resolve(testFile));
     } catch (e) {
       console.log(e.stack || e);
     }
@@ -40,5 +41,5 @@ process.on('message', (filesGlob) => {
     }
   });
 
-  process.send(filterEnabled ? filteredTestFiles : testFiles);
+  process.send({result: filterEnabled ? filteredTestFiles : testFiles});
 });

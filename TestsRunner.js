@@ -1,26 +1,40 @@
 const spawn = require('child_process').spawn;
+const path = require('path');
+const fs = require('fs');
 
-export default class TestsRunner {
+class TestsRunner {
   constructor(config) {
     this.config = config;
     this.executors = new Set();
     this.promise = null;
     this.stopping = false;
+    this.nextFiles = [];
   }
 
   runTestFiles(testFiles) {
+    this.nextFiles = testFiles;
+
     if (this.promise) {
       this.stop();
-      return this.promise.then(() => startTestFiles(testFiles));
+
+      return this.promise.then(() => {
+        // Обработка случая, когда следующий runTestFiles пришел до того,
+        // как отработал предыдущий stop
+        if (this.nextFiles === testFiles) {
+          return this.startTestFiles(this.nextFiles);
+        } else {
+          return Promise.resolve();
+        }
+      });
     } else {
-      return startTestFiles(testFiles);
+      return this.startTestFiles(testFiles);
     }
   }
 
   startTestFiles(testFiles) {
     this.stopping = false;
 
-    if (files.length == 0) return Promise.resolve();
+    if (testFiles.length == 0) return Promise.resolve();
 
     let resolve;
     this.promise = new Promise((r) => resolve = r);
@@ -49,8 +63,8 @@ export default class TestsRunner {
 
       log(`Запуск теста ${testFile}`);
 
-      const p = spawn(path.resolve('node_modules/.bin/mocha'), args.concat([testFile]), {env: env});
-      executors.add(p);
+      const p = spawn(path.resolve('node_modules/.bin/mocha'), args.concat([testFile]));
+      this.executors.add(p);
 
       let passing = 0;
       let pending = 0;
@@ -98,13 +112,14 @@ export default class TestsRunner {
 
         log(`child process exited with code ${code}`);
         this.executors.delete(p);
-        done(code, passing, pending, failing);
+        done(testFile, code, passing, pending, failing);
       });
     }
 
     const run = () => {
-      while (!this.stopping && this.executors.size < parallelTestsCount && lastInput < inputs.length) {
-        startExecutor((code, passing, pending, failing) => {
+      log(`stopping: ${this.stopping} executors: ${this.executors.size} parallelTestsCount: ${parallelTestsCount} testFileNum: ${testFileNum} testFiles: ${testFiles.length}`)
+      while (!this.stopping && this.executors.size < parallelTestsCount && testFileNum < testFiles.length) {
+        startExecutor((testFile, code, passing, pending, failing) => {
 
           totalPassing += passing;
           totalPending += pending;
@@ -130,22 +145,45 @@ export default class TestsRunner {
         }
 
         this.promise = null;
-        resolve();
+        resolve(result);
       }
     }
 
     run();
-  },
+
+    return this.promise;
+  }
 
   stop() {
-    console.log('ОСТАНОВКА ТЕСТИРОВАНИЯ');
+    if (this.stopping) return;
+
+    log('ОСТАНОВКА ТЕСТИРОВАНИЯ');
+    log(`executors.size = ${this.executors.size}`);
     this.stopping = true;
     this.executors.forEach((e) => {
-      e.kill();
+      // Только на сигнал SIGINT у mocha стоит корректный обработчик.
+      e.kill('SIGINT');
+      log(`kill executor ${e.pid}`);
     });
   }
+}
+
+function formatTime(time) {
+  let hours = Math.floor(time / 3600);
+  let mins = Math.floor(time % 3600 / 60);
+  let secs = Math.floor(time % 60);
+
+  let result = '';
+
+  if (hours > 0) result = result + `${hours} ч.`;
+  if (mins > 0)  result = result + ` ${mins} мин.`;
+  if (secs > 0)  result = result + ` ${secs} сек.`;
+
+  return result;
 }
 
 function log(msg) {
   console.log(msg);
 }
+
+module.exports = TestsRunner;
