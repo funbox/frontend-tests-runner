@@ -8,6 +8,7 @@ const EventEmitter = require('events');
 const fs = require('fs');
 const path = require('path');
 const Runner = require('funbox-frontend-tests-runner');
+const {isPortFree, findFreePort} = require('funbox-free-port-finder');
 
 const config = require(path.resolve(process.argv[2]));
 const webpackConfig = require(path.resolve(__dirname, '../webpack.app.test.js'));
@@ -78,35 +79,5 @@ function build() {
 
       resolveInitialBuild = resolve;
     });
-  });
-}
-
-function findFreePort(port) {
-  return isPortFree(port).then((isFree) => {
-    if (isFree) {
-      return port;
-    }
-    return findFreePort(port + 1);
-  });
-}
-
-function isPortFree(port) {
-  return new Promise((resolve, reject) => {
-    const net = require('net');
-    const server = net.createServer();
-    server.once('error', (err) => {
-      if (err.code === 'EADDRINUSE') {
-        resolve(false);
-      } else {
-        throw err;
-      }
-    });
-    server.once('listening', () => {
-      server.once('close', () => {
-        resolve(true);
-      });
-      server.close();
-    });
-    server.listen(port, '0.0.0.0');
   });
 }
