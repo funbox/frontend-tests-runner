@@ -9,5 +9,5 @@ module.exports = {
     viewportWidth: 1440,
     viewportHeight: 900,
     waitTimeout: 60000, // timeout phantom.js
-  }
+  },
 };

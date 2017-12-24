@@ -4,7 +4,8 @@
   "description": "Средство прогона тестов",
   "main": "SupervisedTestsRunner.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --cache -c .eslintrc *.js && eslint --cache -c .eslintrc.examples examples/*.js"
   },
   "author": "FunBox",
   "license": "Proprietary",
@@ -12,5 +13,12 @@
     "filewatcher": "3.0.1",
     "glob": "7.1.1",
     "mocha": "^3.2.0"
+  },
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "eslint-config-airbnb": "14.1.0",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-jsx-a11y": "3.0.2",
+    "eslint-plugin-react": "6.9.0"
   }
 }
