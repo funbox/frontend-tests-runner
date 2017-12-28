@@ -1,0 +1,11 @@
+module.exports = {
+  parallelTestsCount: __PARALLEL_TESTS__COUNT__,
+  testFiles: `${__dirname}/project-tests/*.js`,
+  project: {
+    build() {
+      __BUILD__
+    },
+    addListener(event) {},
+  },
+  noColors: true,
+}

@@ -46,7 +46,10 @@ class TestsRunner {
     const args = [];
     args.push('--retries', retries);
     args.push('--timeout', timeout);
-    args.push('--colors');
+
+    if (!this.config.noColors) {
+      args.push('--colors');
+    }
 
     const startTime = Date.now();
     let result = 0;

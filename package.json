@@ -4,8 +4,8 @@
   "description": "Средство прогона тестов",
   "main": "SupervisedTestsRunner.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --cache -c .eslintrc *.js && eslint --cache -c .eslintrc.examples examples/*.js"
+    "test": "mocha --timeout 10000 tests/SupervisedTestsRunner.test.js",
+    "lint": "eslint --cache -c .eslintrc *.js tests/*.js && eslint --cache -c .eslintrc.examples examples/*.js"
   },
   "author": "FunBox",
   "license": "Proprietary",
