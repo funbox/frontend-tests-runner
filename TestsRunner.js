@@ -65,8 +65,8 @@ class TestsRunner {
       testFileNum += 1;
 
       log(`Запуск теста ${testFile}`);
-
-      const p = spawn(path.resolve('node_modules/.bin/mocha'), args.concat([testFile]));
+      const mochaPath = process.platform === 'win32' ? 'node_modules/.bin/mocha.cmd' : 'node_modules/.bin/mocha';
+      const p = spawn(path.resolve(mochaPath), args.concat([testFile]));
       this.executors.add(p);
 
       let passing = 0;
