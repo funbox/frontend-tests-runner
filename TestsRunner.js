@@ -9,6 +9,7 @@ class TestsRunner {
     this.promise = null;
     this.stopping = false;
     this.nextFiles = [];
+    this.testsStartTimestamp = Date.now();
   }
 
   runTestFiles(testFiles) {
@@ -62,11 +63,14 @@ class TestsRunner {
 
     const startExecutor = done => {
       const testFile = testFiles[testFileNum];
+      const env = Object.create(process.env);
       testFileNum += 1;
 
       log(`Запуск теста ${testFile}`);
+      env.E2E_TESTS_START_TIMESTAMP = this.testsStartTimestamp;
+
       const mochaPath = process.platform === 'win32' ? 'node_modules/.bin/mocha.cmd' : 'node_modules/.bin/mocha';
-      const p = spawn(path.resolve(mochaPath), args.concat([testFile]));
+      const p = spawn(path.resolve(mochaPath), args.concat([testFile]), { env });
       this.executors.add(p);
 
       let passing = 0;
