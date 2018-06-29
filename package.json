@@ -1,7 +1,7 @@
 {
-  "name": "funbox-frontend-tests-runner",
+  "name": "@funboxteam/frontend-tests-runner",
   "version": "0.2.1",
-  "description": "Средство прогона тестов",
+  "description": "Библиотека для запуска Mocha-тестов в несколько потоков",
   "main": "SupervisedTestsRunner.js",
   "scripts": {
     "test": "mocha --timeout 10000 tests/SupervisedTestsRunner.test.js",
