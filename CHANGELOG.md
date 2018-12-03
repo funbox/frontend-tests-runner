@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (03.12.2018)
+
+* Improved the package publishing settings.
+
 ## 1.0.0 (29.06.2018)
 
 * Moved the package into the @funboxteam scope. 
