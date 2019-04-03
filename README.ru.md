@@ -1,6 +1,8 @@
-# funbox-frontend-tests-runner
+# @funboxteam/frontend-tests-runner
 
-**funbox-frontend-tests-runner** — библиотека, позволяющая запускать Mocha-тесты в несколько потоков, а также следить за изменениями файлов тестов и файлов проекта в live-режиме.
+## Описание
+
+**@funboxteam/frontend-tests-runner** — библиотека, позволяющая запускать Mocha-тесты в несколько потоков, а также следить за изменениями файлов тестов и файлов проекта в live-режиме.
 
 Библиотека создана на основе скриптов запуска тестов, выделенных из рабочего окружения funbox-frontend-env-webpack. Отдельная библиотека позволяет разработчикам запускать тесты привычным образом, но без привязки к фреймворку или средству сборки, что увеличивает гибкость разработки проектов.
 
@@ -22,7 +24,7 @@ const config = {
   }
 }
 
-const Runner = require('funbox-frontend-tests-runner');
+const Runner = require('@funboxteam/frontend-tests-runner');
 const runner = new Runner(config);
 runner.start();
 ```
