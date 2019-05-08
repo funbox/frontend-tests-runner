@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 (08.05.2019)
+
+* Fixed the package name in README.
+
 ## 1.1.0 (03.12.2018)
 
 * Improved the package publishing settings.
