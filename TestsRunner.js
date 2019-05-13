@@ -41,16 +41,42 @@ class TestsRunner {
     this.promise = new Promise(r => { resolve = r; });
 
     const parallelTestsCount = this.config.parallelTestsCount || 1;
-    const timeout = this.config.timeout || 30000;
-    const retries = this.config.retries || 0;
+
+    const mochaConfig = this.config.mocha || {};
+
+    const timeout = mochaConfig.timeout || this.config.timeout || 30000;
+    const retries = mochaConfig.retries || this.config.retries || 0;
+    const noColors = mochaConfig.noColors || this.config.noColors ;
+    const argsObject = mochaConfig.args || {};
+
+    if (this.config.timeout || this.config.retries || 'noColors' in this.config) {
+      console.error('\x1b[33m\x1b[1m\nСвойства `timeout`, `retries` и `noColors` должны быть перенесены в объект `mocha` в конфигурационом файле.\x1b[0m');
+      console.error('\x1b[33m\x1b[1mНеобходимо ознакомиться с изменениями в файле README.md\x1b[0m\n');
+
+      const argsTitles = [
+        ...(this.config.timeout ? [`"timeout": ${this.config.timeout}`] : []),
+        ...(this.config.retries ? [`"retries": ${this.config.retries}`] : []),
+        ...('noColors' in this.config ? [`"noColors": ${this.config.noColors}`] : []),
+      ];
+
+      console.log('Передаваемый конфигурационный файл \x1b[31m(deprecated)\x1b[0m:');
+      console.error(`\x1b[1m\n  {\n    ${argsTitles.join(',\n    ')}  \n  }\x1b[0m\n`);
+
+      console.log('Ожидаемый конфигурационный файл:');
+      console.error(`\x1b[1m\n  {\n    mocha: {\n      ${argsTitles.join(',\n      ')}\n    }  \n  }\x1b[0m\n`);
+    }
 
     const args = [];
     args.push('--retries', retries);
     args.push('--timeout', timeout);
 
-    if (!this.config.noColors) {
+    if (!noColors) {
       args.push('--colors');
     }
+
+    Object.keys(argsObject).forEach(arg => {
+      args.push(arg, argsObject[arg]);
+    });
 
     const startTime = Date.now();
     let result = 0;

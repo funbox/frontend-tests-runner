@@ -37,5 +37,23 @@ runner.start();
 * `live`  — запуск тестов в live-режиме (слежение за изменениями файлов тестов и файлов проекта);
 * `separatedLogs` — запись отдельного лога по каждому тест-файлу в папку `test-logs` после выполнения теста;
 * `testFiles` — glob файлов с тестами, например, `tests/\*.js`;
-* `timeout` — опция `timeout` для Mocha;
-* `retries` — опция `retries` для Mocha (количество попыток перезапуска тестов при падении).
+* `mocha.timeout` — опция `timeout` для Mocha;
+* `mocha.retries` — опция `retries` для Mocha (количество попыток перезапуска тестов при падении).
+* `mocha.noColors` — опция `noColors` для Mocha (отмена вывода цветов в терминал).
+* `mocha.args` – объект с дополнительными аргументами для запуска Mocha:
+
+```javascript
+{
+  mocha: {
+    timeout: 120000,
+    retries: 0,
+    noColors: true,
+    args: {
+      '--compilers': 'js:babel-register',
+    },
+  },
+}
+```
+**Deprecated**
+
+Свойства `timeout`, `retries`, `noColors` были перенесены в объект `mocha`.
