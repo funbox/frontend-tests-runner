@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1 (21.05.2019)
+
+* Fix passed arguments check.
+
 ## 2.0.0 (21.05.2019)
 
 * Added support for passing Mocha args from the config.
