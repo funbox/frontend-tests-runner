@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0 (21.05.2019)
+
+* Added support for passing Mocha args from the config.
+
 ## 1.2.0 (08.05.2019)
 
 * Fixed the package name in README.
