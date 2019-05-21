@@ -4,7 +4,7 @@ const fs = require('fs');
 
 class TestsRunner {
   constructor(config) {
-    this.config = config;
+    this.config = config || {};
     this.executors = new Set();
     this.promise = null;
     this.stopping = false;
@@ -49,14 +49,19 @@ class TestsRunner {
     const noColors = mochaConfig.noColors || this.config.noColors ;
     const argsObject = mochaConfig.args || {};
 
-    if (this.config.timeout || this.config.retries || 'noColors' in this.config) {
+    const argsKeys = Object.keys(this.config);
+    const isTimeout = argsKeys.includes('timeout');
+    const isRetries = argsKeys.includes('retries');
+    const isNoColors = argsKeys.includes('noColors');
+
+    if (isTimeout || isRetries || isNoColors) {
       console.error('\x1b[33m\x1b[1m\nСвойства `timeout`, `retries` и `noColors` должны быть перенесены в объект `mocha` в конфигурационом файле.\x1b[0m');
       console.error('\x1b[33m\x1b[1mНеобходимо ознакомиться с изменениями в файле README.md\x1b[0m\n');
 
       const argsTitles = [
-        ...(this.config.timeout ? [`"timeout": ${this.config.timeout}`] : []),
-        ...(this.config.retries ? [`"retries": ${this.config.retries}`] : []),
-        ...('noColors' in this.config ? [`"noColors": ${this.config.noColors}`] : []),
+        ...(isTimeout ? [`"timeout": ${this.config.timeout}`] : []),
+        ...(isRetries ? [`"retries": ${this.config.retries}`] : []),
+        ...(isNoColors ? [`"noColors": ${this.config.noColors}`] : []),
       ];
 
       console.log('Передаваемый конфигурационный файл \x1b[31m(deprecated)\x1b[0m:');
