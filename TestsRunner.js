@@ -46,7 +46,7 @@ class TestsRunner {
 
     const timeout = mochaConfig.timeout || this.config.timeout || 30000;
     const retries = mochaConfig.retries || this.config.retries || 0;
-    const noColors = mochaConfig.noColors || this.config.noColors ;
+    const noColors = mochaConfig.noColors || this.config.noColors;
     const argsObject = mochaConfig.args || {};
 
     const argsKeys = Object.keys(this.config);

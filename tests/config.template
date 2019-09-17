@@ -7,5 +7,7 @@ module.exports = {
     },
     addListener(event) {},
   },
-  noColors: true,
+  mocha: {
+    noColors: true,
+  },
 }
