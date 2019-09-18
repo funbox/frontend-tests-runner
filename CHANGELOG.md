@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0 (18.09.2019)
+
+* Updated deps.
+
 ## 2.0.1 (21.05.2019)
 
 * Fix passed arguments check.
