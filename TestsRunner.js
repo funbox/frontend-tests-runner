@@ -145,13 +145,15 @@ class TestsRunner {
 
       p.on('close', code => {
         if (this.config.separatedLogs) {
+          const { logDir = 'test-logs' } = this.config;
+
           try {
-            fs.mkdirSync('test-logs');
+            fs.mkdirSync(logDir);
           } catch (e) {
             // Директория уже существует
           }
 
-          fs.writeFileSync(`test-logs/${prefix}.log`, logs);
+          fs.writeFileSync(`${logDir}/${prefix}.log`, logs);
         }
 
         log(`child process exited with code ${code}`);
