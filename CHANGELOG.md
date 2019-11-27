@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0 (27.11.2019)
+
+* Added param for log output directory name.
+
 ## 2.1.0 (18.09.2019)
 
 * Updated deps.
