@@ -192,7 +192,7 @@ class TestsRunner {
           });
         }
 
-        log();
+        log('');
         log(`${totalPassing} passing`);
         log(`${totalPending} pending`);
         log(`${totalFailing} failing`);
