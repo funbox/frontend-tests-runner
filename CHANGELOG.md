@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.1 (28.05.2020)
+
+* Fixed empty line output.
+
 ## 2.2.0 (27.11.2019)
 
 * Added param for log output directory name.
