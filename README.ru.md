@@ -50,7 +50,11 @@ runner.start();
     retries: 0,
     noColors: true,
     args: {
-      '--compilers': 'js:babel-register',
+      // '--compilers': 'js:babel-register',
+      '--require': [
+        '@babel/register',
+        'babel-polyfill',
+      ],
     },
   },
 }
