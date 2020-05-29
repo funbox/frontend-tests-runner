@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0 (02.06.2020)
+
+* Added support for multiple values for Mocha options.
+
 ## 2.2.1 (28.05.2020)
 
 * Fixed empty line output.
