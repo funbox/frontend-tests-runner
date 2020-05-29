@@ -80,7 +80,11 @@ class TestsRunner {
     }
 
     Object.keys(argsObject).forEach(arg => {
-      args.push(arg, argsObject[arg]);
+      if (Array.isArray(argsObject[arg])) {
+        argsObject[arg].forEach(argValue => args.push(arg, argValue));
+      } else {
+        args.push(arg, argsObject[arg]);
+      }
     });
 
     const startTime = Date.now();
