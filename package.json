@@ -1,14 +1,23 @@
 {
   "name": "@funboxteam/frontend-tests-runner",
   "version": "2.3.0",
-  "description": "Библиотека для запуска Mocha-тестов в несколько потоков",
+  "description": "A library for running Mocha tests in parallel",
   "main": "SupervisedTestsRunner.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/funbox/frontend-tests-runner"
+  },
+  "files": [
+    "SupervisedTestsRunner.js",
+    "TestFilesCalculator.js",
+    "TestsRunner.js"
+  ],
+  "author": "FunBox LLC <wanted@fun-box.ru> (https://funbox.ru)",
+  "license": "MIT",
   "scripts": {
     "test": "mocha --timeout 10000 tests/SupervisedTestsRunner.test.js",
     "lint": "eslint --cache --config .eslintrc.js ."
   },
-  "author": "FunBox",
-  "license": "Proprietary",
   "dependencies": {
     "fast-glob": "3.2.4",
     "filewatcher": "3.0.1",
