@@ -1,4 +1,4 @@
-const globSync = require('glob').sync;
+const fastGlobSync = require('fast-glob').sync;
 const path = require('path');
 
 const emptyFn = () => {};
@@ -16,7 +16,7 @@ let filterEnabled = false;
 const filteredTestFiles = [];
 
 process.on('message', msg => {
-  const testFiles = globSync(msg.filesGlob);
+  const testFiles = fastGlobSync(msg.filesGlob);
   testFiles.forEach(testFile => {
     let filter = false;
 

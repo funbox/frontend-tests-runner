@@ -1,6 +1,6 @@
 const childProcess = require('child_process');
 const filewatcher = require('filewatcher');
-const globSync = require('glob').sync;
+const fastGlobSync = require('fast-glob').sync;
 const TestsRunner = require('./TestsRunner');
 
 class SupervisedTestsRunner {
@@ -29,12 +29,12 @@ class SupervisedTestsRunner {
   trackFileChanges() {
     const watcher = filewatcher();
 
-    globSync(this.config.testFiles).forEach(file => {
+    fastGlobSync(this.config.testFiles).forEach(file => {
       watcher.add(file);
     });
 
     watcher.on('change', file => {
-      console.log(`Изменение файла ${file}`);
+      console.log(`File changed: ${file}`);
       this.calculateTestFiles().then(files => {
         if (files.indexOf(file) > -1) {
           this.testsRunner.runTestFiles([file]);

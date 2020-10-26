@@ -9,8 +9,8 @@ const WebpackDevServer = require('webpack-dev-server');
 const EventEmitter = require('events');
 const fs = require('fs');
 const path = require('path');
-const Runner = require('funbox-frontend-tests-runner');
-const { isPortFree, findFreePort } = require('funbox-free-port-finder');
+const Runner = require('@funboxteam/frontend-tests-runner');
+const { isPortFree, findFreePort } = require('@funboxteam/free-port-finder');
 
 const config = require(path.resolve(process.argv[2]));
 const webpackConfig = require(path.resolve(__dirname, '../webpack.app.test.js'));
@@ -19,7 +19,7 @@ const project = new EventEmitter();
 
 let resolveInitialBuild;
 
-// Проброс параметров запуска phantomjs через переменную окружения
+// Pass PhantomJS arguments through the env variable
 process.env.BROWSER_ARGS = JSON.stringify(config.browserArgs);
 
 project.build = () => {
@@ -37,12 +37,12 @@ project.build = () => {
 };
 
 function setBaseUrl() {
-  // Пробрасываем ENV-переменную BASE_URL для того, чтобы e2e тесты знали адрес проверяемого приложения
+  // Pass env variable BASE_URL to make it possible for E2E tests to find the app URL
   process.env.BASE_URL = `http://localhost:${webpackConfig.devServer.port}`;
   console.log(`BASE_URL: ${process.env.BASE_URL}`);
 }
 
-// В данном примере для реализации работы live-режима использует плагин funbox-rebuild-in-progress-webpack-plugin
+// Here we assume that @funboxteam/rebuild-in-progress-webpack-plugin is used for live mode
 const rebuildInProgressFile = path.resolve(__dirname, '../../node_modules/.rebuildInProgress');
 
 fs.watch(path.dirname(rebuildInProgressFile), (eventType, filename) => {
@@ -66,10 +66,10 @@ runner.start();
 
 function build() {
   return new Promise(resolve => {
-    // В данном примере в качестве средства сборки в проекте используется webpack
+    // For example we use Webpack here
     new WebpackDevServer(webpack(webpackConfig), webpackConfig.devServer).listen(webpackConfig.devServer.port, 'localhost', err => {
       if (err) {
-        console.log(`Ошибка сборки: ${err}`);
+        console.log(`Build error: ${err}`);
         process.exit(1);
       }
 

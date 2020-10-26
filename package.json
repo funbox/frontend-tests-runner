@@ -10,8 +10,8 @@
   "author": "FunBox",
   "license": "Proprietary",
   "dependencies": {
+    "fast-glob": "3.2.4",
     "filewatcher": "3.0.1",
-    "glob": "7.1.1",
     "mocha": "6.2.0"
   },
   "devDependencies": {

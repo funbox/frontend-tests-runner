@@ -19,8 +19,7 @@ class TestsRunner {
       this.stop();
 
       return this.promise.then(() => {
-        // Обработка случая, когда следующий runTestFiles пришел до того,
-        // как отработал предыдущий stop
+        // Next 'runTestsFiles' may come before the previous 'stop' is done
         if (this.nextFiles === testFiles) {
           return this.startTestFiles(this.nextFiles);
         }
@@ -55,8 +54,8 @@ class TestsRunner {
     const isNoColors = argsKeys.includes('noColors');
 
     if (isTimeout || isRetries || isNoColors) {
-      console.error('\x1b[33m\x1b[1m\nСвойства `timeout`, `retries` и `noColors` должны быть перенесены в объект `mocha` в конфигурационом файле.\x1b[0m');
-      console.error('\x1b[33m\x1b[1mНеобходимо ознакомиться с изменениями в файле README.md\x1b[0m\n');
+      console.error('\x1b[33m\x1b[1m\nProps `timeout`, `retries` & `noColors` must to be moved into the `mocha` object in the config.\x1b[0m');
+      console.error('\x1b[33m\x1b[1mPlease check the project README.\x1b[0m\n');
 
       const argsTitles = [
         ...(isTimeout ? [`"timeout": ${this.config.timeout}`] : []),
@@ -64,10 +63,10 @@ class TestsRunner {
         ...(isNoColors ? [`"noColors": ${this.config.noColors}`] : []),
       ];
 
-      console.log('Передаваемый конфигурационный файл \x1b[31m(deprecated)\x1b[0m:');
+      console.log('Passed config file \x1b[31m(deprecated)\x1b[0m:');
       console.error(`\x1b[1m\n  {\n    ${argsTitles.join(',\n    ')}  \n  }\x1b[0m\n`);
 
-      console.log('Ожидаемый конфигурационный файл:');
+      console.log('Expected config file:');
       console.error(`\x1b[1m\n  {\n    mocha: {\n      ${argsTitles.join(',\n      ')}\n    }  \n  }\x1b[0m\n`);
     }
 
@@ -101,7 +100,7 @@ class TestsRunner {
       const env = Object.create(process.env);
       testFileNum += 1;
 
-      log(`Запуск теста ${testFile}`);
+      log(`Run test: ${testFile}`);
       env.E2E_TESTS_START_TIMESTAMP = this.testsStartTimestamp;
 
       const mochaPath = process.platform === 'win32' ? 'node_modules/.bin/mocha.cmd' : 'node_modules/.bin/mocha';
@@ -154,20 +153,20 @@ class TestsRunner {
           try {
             fs.mkdirSync(logDir);
           } catch (e) {
-            // Директория уже существует
+            // exists
           }
 
           fs.writeFileSync(`${logDir}/${prefix}.log`, logs);
         }
 
-        log(`child process exited with code ${code}`);
+        log(`Child process exited with code ${code}`);
         this.executors.delete(p);
         done(testFile, code, passing, pending, failing);
       });
     };
 
     const run = () => {
-      log(`stopping: ${this.stopping} executors: ${this.executors.size} parallelTestsCount: ${parallelTestsCount} testFileNum: ${testFileNum} testFiles: ${testFiles.length}`);
+      log(`Stopping: ${this.stopping}, executors: ${this.executors.size}, parallelTestsCount: ${parallelTestsCount}, testFileNum: ${testFileNum}, testFiles: ${testFiles.length}`);
 
       const onFinish = (testFile, code, passing, pending, failing) => {
         totalPassing += passing;
@@ -187,12 +186,12 @@ class TestsRunner {
       }
 
       if (this.executors.size === 0 && (this.stopping || testFileNum >= testFiles.length)) {
-        log(`E2E тесты завершились за ${formatTime(Math.floor(Date.now() - startTime) / 1000)}`);
+        log(`E2E tests finished and took: ${formatTime(Math.floor(Date.now() - startTime) / 1000)}`);
 
         if (filesWithFailures.length) {
-          log('\nПроблемные файлы:');
+          log('\nFailed files:');
           filesWithFailures.forEach((f, index) => {
-            log(`${index + 1}. ${f.name} (провалено тестов: ${f.failing})`);
+            log(`${index + 1}. ${f.name} (failed tests: ${f.failing})`);
           });
         }
 
@@ -214,13 +213,13 @@ class TestsRunner {
   stop() {
     if (this.stopping) return;
 
-    log('ОСТАНОВКА ТЕСТИРОВАНИЯ');
+    log('STOPPING TESTING');
     log(`executors.size = ${this.executors.size}`);
     this.stopping = true;
     this.executors.forEach(e => {
-      // Только на сигнал SIGINT у mocha стоит корректный обработчик.
+      // Mocha may handle correctly SIGINT only
       e.kill('SIGINT');
-      log(`kill executor ${e.pid}`);
+      log(`Kill executor: ${e.pid}`);
     });
   }
 }
@@ -232,9 +231,9 @@ function formatTime(time) {
 
   let result = '';
 
-  if (hours > 0) result = `${result}${hours} ч.`;
-  if (mins > 0) result = `${result} ${mins} мин.`;
-  if (secs > 0) result = `${result} ${secs} сек.`;
+  if (hours > 0) result = `${result}${hours} h`;
+  if (mins > 0) result = `${result} ${mins} min`;
+  if (secs > 0) result = `${result} ${secs} sec`;
 
   return result;
 }

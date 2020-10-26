@@ -12,31 +12,31 @@ describe('Runner', () => {
   beforeEach(removeConfig);
   afterEach(removeConfig);
 
-  it('Запускает тесты последовательно', () => {
+  it('runs tests sequentially', () => {
     createConfig(1, 'return Promise.resolve();');
     const output = runTests();
     const index1 = output.indexOf('test1.js     ✓ test1');
     const index2 = output.indexOf('test2.js     ✓ test2');
-    assert.notEqual(index1, -1);
-    assert.notEqual(index2, -1);
-    assert.equal(index2 > index1, true);
+    assert.notStrictEqual(index1, -1);
+    assert.notStrictEqual(index2, -1);
+    assert.strictEqual(index2 > index1, true);
   });
 
-  it('Запускает тесты параллельно', () => {
+  it('runs tests in parallel', () => {
     createConfig(2, 'return Promise.resolve();');
     const output = runTests();
     const index1 = output.indexOf('test1.js     ✓ test1');
     const index2 = output.indexOf('test2.js     ✓ test2');
-    assert.notEqual(index1, -1);
-    assert.notEqual(index2, -1);
-    assert.equal(index1 > index2, true);
+    assert.notStrictEqual(index1, -1);
+    assert.notStrictEqual(index2, -1);
+    assert.strictEqual(index1 > index2, true);
   });
 
-  it('Ждет билда проекта', () => {
+  it('waits for the project build', () => {
     createConfig(2, 'console.log("build finished"); return Promise.resolve();');
     const output = runTests();
     const index = output.indexOf('build finished');
-    assert.notEqual(index, -1);
+    assert.notStrictEqual(index, -1);
   });
 });
 
@@ -56,6 +56,6 @@ function removeConfig() {
   try {
     fs.unlinkSync(CONFIG_NAME);
   } catch (e) {
-    // ничего не делаем если файл не существует
+    // silently ignore the possible errors
   }
 }
