@@ -5,7 +5,7 @@
   "main": "SupervisedTestsRunner.js",
   "scripts": {
     "test": "mocha --timeout 10000 tests/SupervisedTestsRunner.test.js",
-    "lint": "eslint --cache -c .eslintrc *.js tests/*.js && eslint --cache -c .eslintrc.examples examples/*.js"
+    "lint": "eslint --cache --config .eslintrc.js ."
   },
   "author": "FunBox",
   "license": "Proprietary",
@@ -15,10 +15,7 @@
     "mocha": "6.2.0"
   },
   "devDependencies": {
-    "eslint": "3.19.0",
-    "eslint-config-airbnb": "14.1.0",
-    "eslint-plugin-import": "2.7.0",
-    "eslint-plugin-jsx-a11y": "3.0.2",
-    "eslint-plugin-react": "6.9.0"
+    "@funboxteam/eslint-config": "5.1.0",
+    "eslint": "5.16.0"
   }
 }

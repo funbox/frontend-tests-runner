@@ -30,6 +30,7 @@ process.on('message', msg => {
     };
 
     try {
+      // eslint-disable-next-line import/no-dynamic-require
       require(path.resolve(testFile));
     } catch (e) {
       console.log(e.stack || e);

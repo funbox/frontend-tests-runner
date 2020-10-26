@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved,import/no-dynamic-require */
+
 if (process.argv.length !== 3) {
   console.log('Usage: node run-tests.js <config>');
 }
