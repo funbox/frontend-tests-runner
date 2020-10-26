@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0 (26.10.2020)
+
+* Updated the deps.
+* Replaced `glob` dep with `fast-glob`.
+* Added LICENSE.
+* Prepared the package for publishing on GitHub.
+
 ## 2.3.0 (02.06.2020)
 
 * Added support for multiple values for Mocha options.

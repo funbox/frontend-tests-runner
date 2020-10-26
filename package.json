@@ -1,6 +1,6 @@
 {
   "name": "@funboxteam/frontend-tests-runner",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "A library for running Mocha tests in parallel",
   "main": "SupervisedTestsRunner.js",
   "repository": {
