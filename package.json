@@ -19,6 +19,7 @@
     "lint": "eslint --cache --config .eslintrc.js ."
   },
   "dependencies": {
+    "dependency-tree": "7.2.2",
     "fast-glob": "3.2.4",
     "filewatcher": "3.0.1",
     "mocha": "6.2.0"
