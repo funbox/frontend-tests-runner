@@ -10,4 +10,12 @@ module.exports = {
   mocha: {
     noColors: true,
   },
+  ignoredBranches: ['__IGNORED_BRANCH__'],
+  baseBranch: '__BASE_BRANCH__',
+  dependencyTree: {
+    filename: 'tests/app/app.js',
+    directory: 'tests/app',
+    filter: path => !path.includes('node_modules'),
+  },
+  ignoredFiles: ['**/*', '__IGNORED_FILES__'],
 }
