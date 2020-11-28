@@ -76,7 +76,9 @@ class SupervisedTestsRunner {
       }
 
       if (this.config.ignoredBranches) {
-        const currentBranch = process.env.GIT_BRANCH || require('child_process').execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+        const currentBranch = process.env.GIT_BRANCH
+          || process.env.GITHUB_HEAD_REF
+          || require('child_process').execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
 
         if (this.config.ignoredBranches.includes(currentBranch.replace(/^origin\//, ''))) {
           console.log(`${ANSI_GREEN}Current branch is ignored${ANSI_ALL_OFF}`);

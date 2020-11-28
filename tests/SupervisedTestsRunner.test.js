@@ -9,7 +9,7 @@ const VIEW_APP_PATH = `${__dirname}/app`;
 const CONFIG_NAME = `${__dirname}/config.js`;
 
 const CONFIG_TEMPLATE = fs.readFileSync(`${__dirname}/config.template`, { encoding: 'utf8' });
-const CURRENT_BRANCH = require('child_process').execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+const CURRENT_BRANCH = process.env.GITHUB_HEAD_REF || require('child_process').execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
 
 const BASE_BRANCH = 'master';
 
@@ -52,32 +52,38 @@ describe('Runner', () => {
     assert.notStrictEqual(index, -1);
   });
 
-  it('no files changed', () => {
-    createConfig({ baseBranch: BASE_BRANCH });
-    const output = runTests();
-    const index = output.indexOf('No files changed');
-    assert.notStrictEqual(index, -1);
-    assert.notStrictEqual(index, -1);
-  });
+  try {
+    require('child_process').execSync(`git diff --name-only origin/${CURRENT_BRANCH}`);
 
-  it('found changed files without target, run all tests', () => {
-    createConfig({ ignoredFiles: '!tests/app/view*.js', baseBranch: BASE_BRANCH });
-    newView();
-    const output = runTests();
-    const index = output.indexOf('Found changed files without target, run all tests');
-    newView(true);
-    assert.notStrictEqual(index, -1);
-    assert.notStrictEqual(index, -1);
-  });
+    it('no files changed', () => {
+      createConfig({ baseBranch: BASE_BRANCH });
+      const output = runTests();
+      const index = output.indexOf('No files changed');
+      assert.notStrictEqual(index, -1);
+      assert.notStrictEqual(index, -1);
+    });
 
-  it('run tests affected by change', () => {
-    createConfig({ ignoredFiles: '!tests/app/view*.js', baseBranch: BASE_BRANCH });
-    changeView("What i've done");
-    const output = runTests();
-    const index = output.indexOf('Run tests affected by change');
-    changeView('');
-    assert.notStrictEqual(index, -1);
-  });
+    it('found changed files without target, run all tests', () => {
+      createConfig({ ignoredFiles: '!tests/app/view*.js', baseBranch: BASE_BRANCH });
+      newView();
+      const output = runTests();
+      const index = output.indexOf('Found changed files without target, run all tests');
+      newView(true);
+      assert.notStrictEqual(index, -1);
+      assert.notStrictEqual(index, -1);
+    });
+
+    it('run tests affected by change', () => {
+      createConfig({ ignoredFiles: '!tests/app/view*.js', baseBranch: BASE_BRANCH });
+      changeView("What i've done");
+      const output = runTests();
+      const index = output.indexOf('Run tests affected by change');
+      changeView('');
+      assert.notStrictEqual(index, -1);
+    });
+  } catch (e) {
+    console.log(e)
+  }
 });
 
 function runTests() {
