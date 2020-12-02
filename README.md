@@ -42,30 +42,69 @@ For more check [examples](./examples) directory.
 
 ### Configuration
 
-* `parallelTestsCount` — a number of files with tests running in parallel.
-* `live` — run tests in live mode (enabling watching for files changes).
-* `separatedLogs` — write logs for each test file separately.
-* `logDir` — directory name for `separatedLogs`; optional, default: `test-logs`.
-* `testFiles` — glob with tests files, e.g. `tests/\*.js`.
-* `mocha.timeout` — test timeout threshold (in milliseconds).
-* `mocha.retries` — retry failed tests this many times.
-* `mocha.noColors` — disable color output.
-* `mocha.args` – additional args object for Mocha.
-
-Example of passing arguments for Mocha:
+Example of all configuration options and their defaults:
 
 ```javascript
 module.exports = {
+  // A number of files with tests running in parallel.
+  // Optional.
+  parallelTestsCount: 1,
+  
+  // Run tests in live mode (enabling watching for files changes).
+  // Optional.
+  live: false,
+
+  // Write logs for each test file separately.
+  // Optional.
+  separatedLogs: false,
+
+  // Directory name for `separatedLogs`.
+  // Optional.
+  logDir: 'test-logs',
+
+  // Glob with tests files, for exampe: `tests/\*.js`.
+  // Required.
+  testFiles: undefined,
+
+  project: {
+    build() {
+      // Build project function. Must return Promise.
+    },
+    addListener(event) {
+      // Event subscription function. There're two possible events:
+      //   buildStart — the project building has started; 
+      //   buildFinish — the project building has finished.
+      // Helpful for live testing.
+    }
+  },
+
+  // Mocha config https://mochajs.org/#command-line-usage.
+  // Optional.
   mocha: {
-    timeout: 120000,
+    // Test timeout threshold (in milliseconds).
+    // https://mochajs.org/#-timeout-ms-t-ms
+    // Optional.
+    timeout: 30000,
+
+    // Retry failed tests this many times.
+    // https://mochajs.org/#-retries-n
+    // Optional.
     retries: 0,
-    noColors: true,
+
+    // Disable color output.
+    // https://mochajs.org/#-color-c-colors
+    // Optional.
+    noColors: false,
+    
+    // Additional args object for Mocha.
+    // Optional.
     args: {
+      // e.g.:
       // '--compilers': 'js:babel-register',
-      '--require': [
-        '@babel/register',
-        'babel-polyfill',
-      ],
+      // '--require': [
+      //   '@babel/register',
+      //   'babel-polyfill',
+      // ],
     },
   },
 }
