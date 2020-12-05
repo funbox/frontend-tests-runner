@@ -35,7 +35,7 @@ class SupervisedTestsRunner {
 
     watcher.on('change', file => {
       console.log(`File changed: ${file}`);
-      this.calculateTestFiles().then(files => {
+      this.calculateTestFiles().then(({ files }) => {
         if (files.indexOf(file) > -1) {
           this.testsRunner.runTestFiles([file]);
         }
@@ -44,7 +44,13 @@ class SupervisedTestsRunner {
   }
 
   startAllTests() {
-    return this.calculateTestFiles().then(files => this.testsRunner.runTestFiles(files));
+    return this.calculateTestFiles().then(async ({ files, filterEnabled }) => {
+      const testsForRun = this.config.filterTestsFiles
+        ? await this.config.filterTestsFiles(files, filterEnabled)
+        : files;
+
+      return this.testsRunner.runTestFiles(testsForRun);
+    });
   }
 
   calculateTestFiles() {
