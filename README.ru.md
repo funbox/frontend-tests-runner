@@ -64,6 +64,18 @@ module.exports = {
   // Обязательный.
   testFiles: undefined,
 
+  // Функция, возвращающая файлы тестов для запуска. Может быть асинхронной.
+  // Не обязательный.
+  filterTestsFiles: (files, isFilteredByOnly) => {
+    // например:
+    // if (isFilteredByOnly) return files;
+
+    // const testsFilesDependencies = getTestsFilesDependencies(files);
+    // const changedFiles = getChangedFiles();
+
+    // return getAffectedTestsFiles(testsFilesDependencies, changedFiles);
+  },
+
   project: {
     build() {
       // Функция для сборки проекта. Должна возвращать Promise.
