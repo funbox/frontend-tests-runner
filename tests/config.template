@@ -10,4 +10,5 @@ module.exports = {
   mocha: {
     noColors: true,
   },
+  filterTestsFiles: __FILTER_TESTS__,
 }
