@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.0 (15.12.2020)
+
+* Added ability to filter tests files using `filterTestsFiles` option.
+
+
 ## 3.0.0 (26.10.2020)
 
 * Updated the deps.
