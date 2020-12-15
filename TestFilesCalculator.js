@@ -42,5 +42,10 @@ process.on('message', msg => {
     }
   });
 
-  process.send({ result: filterEnabled ? filteredTestFiles : testFiles });
+  process.send({
+    result: {
+      files: filterEnabled ? filteredTestFiles : testFiles,
+      filterEnabled,
+    },
+  });
 });

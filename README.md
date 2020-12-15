@@ -26,7 +26,7 @@ const config = {
     },
     addListener(event) {
       // Even subscription function. There're two possible events
-      //   buildStart — the project building has started; 
+      //   buildStart — the project building has started;
       //   buildFinish — the project building has finished;
       // Helpful for live testing.
     }
@@ -49,7 +49,7 @@ module.exports = {
   // A number of files with tests running in parallel.
   // Optional.
   parallelTestsCount: 1,
-  
+
   // Run tests in live mode (enabling watching for files changes).
   // Optional.
   live: false,
@@ -66,13 +66,25 @@ module.exports = {
   // Required.
   testFiles: undefined,
 
+  // Return test files for run. Function can be async.
+  // Optional.
+  filterTestsFiles: (files, isFilteredByOnly) => {
+    // e.g.:
+    // if (isFilteredByOnly) return files;
+
+    // const testsFilesDependencies = getTestsFilesDependencies(files);
+    // const changedFiles = getChangedFiles();
+
+    // return getAffectedTestsFiles(testsFilesDependencies, changedFiles);
+  },
+
   project: {
     build() {
       // Build project function. Must return Promise.
     },
     addListener(event) {
       // Event subscription function. There're two possible events:
-      //   buildStart — the project building has started; 
+      //   buildStart — the project building has started;
       //   buildFinish — the project building has finished.
       // Helpful for live testing.
     }
@@ -95,7 +107,7 @@ module.exports = {
     // https://mochajs.org/#-color-c-colors
     // Optional.
     noColors: false,
-    
+
     // Additional args object for Mocha.
     // Optional.
     args: {
