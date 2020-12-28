@@ -3,8 +3,10 @@ module.exports = {
   live: true,
   separatedLogs: true,
   testFiles: './src/tests/e2e/*.js',
-  timeout: 120000, // timeout mocha
-  retries: 0,
+  mocha: {
+    timeout: 120000, // timeout mocha
+    retries: 0,
+  },
   browserArgs: {
     viewportWidth: 1440,
     viewportHeight: 900,
