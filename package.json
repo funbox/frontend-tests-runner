@@ -21,7 +21,7 @@
   "dependencies": {
     "fast-glob": "3.2.4",
     "filewatcher": "3.0.1",
-    "mocha": "6.2.0"
+    "mocha": "6.2.3"
   },
   "devDependencies": {
     "@funboxteam/eslint-config": "5.1.0",
