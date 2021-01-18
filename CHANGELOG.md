@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.1 (18.01.2021)
+
+* Updated Mocha to 6.2.3 to fix npm audit warnings.
+
 ## 3.1.0 (15.12.2020)
 
 * Added ability to filter tests files using `filterTestsFiles` option.
