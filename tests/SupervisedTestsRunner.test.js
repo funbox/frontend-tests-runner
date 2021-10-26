@@ -15,8 +15,8 @@ describe('Runner', () => {
   it('runs tests sequentially', () => {
     createConfig(1, 'return Promise.resolve();');
     const output = runTests();
-    const index1 = output.indexOf('test1.js     ✓ test1');
-    const index2 = output.indexOf('test2.js     ✓ test2');
+    const index1 = output.indexOf('test1.js     ✔ test1');
+    const index2 = output.indexOf('test2.js     ✔ test2');
     assert.notStrictEqual(index1, -1);
     assert.notStrictEqual(index2, -1);
     assert.strictEqual(index2 > index1, true);
@@ -25,8 +25,8 @@ describe('Runner', () => {
   it('runs tests in parallel', () => {
     createConfig(2, 'return Promise.resolve();');
     const output = runTests();
-    const index1 = output.indexOf('test1.js     ✓ test1');
-    const index2 = output.indexOf('test2.js     ✓ test2');
+    const index1 = output.indexOf('test1.js     ✔ test1');
+    const index2 = output.indexOf('test2.js     ✔ test2');
     assert.notStrictEqual(index1, -1);
     assert.notStrictEqual(index2, -1);
     assert.strictEqual(index1 > index2, true);
@@ -42,8 +42,8 @@ describe('Runner', () => {
   it('filter tests files', () => {
     createConfig(2, 'return Promise.resolve();', "files => files.filter(file => file.includes('test1.js'))");
     const output = runTests();
-    const index1 = output.indexOf('test1.js     ✓ test1');
-    const index2 = output.indexOf('test2.js     ✓ test2');
+    const index1 = output.indexOf('test1.js     ✔ test1');
+    const index2 = output.indexOf('test2.js     ✔ test2');
     assert.notStrictEqual(index1, -1);
     assert.strictEqual(index2, -1);
   });
