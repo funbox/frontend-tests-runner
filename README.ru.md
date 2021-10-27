@@ -110,7 +110,7 @@ module.exports = {
     // Не обязательный.
     args: {
       // например:
-      // '--compilers': 'js:babel-register',
+      // '--full-trace': 'true',
       // '--require': [
       //   '@babel/register',
       //   'babel-polyfill',
