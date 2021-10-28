@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.0 (28.10.2021)
+
+We've updated Mocha to v9 and dropped old config format support. 
+
+Please, refer to [migration guide](./MIGRATION.md) for more information. 
+
+
 ## 3.1.2 (10.06.2021)
 
 Fixed several security vulnerabilities:
