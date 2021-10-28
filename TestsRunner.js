@@ -43,32 +43,7 @@ class TestsRunner {
 
     const mochaConfig = this.config.mocha || {};
 
-    const timeout = mochaConfig.timeout || this.config.timeout || 30000;
-    const retries = mochaConfig.retries || this.config.retries || 0;
-    const noColors = mochaConfig.noColors || this.config.noColors;
-    const argsObject = mochaConfig.args || {};
-
-    const argsKeys = Object.keys(this.config);
-    const isTimeout = argsKeys.includes('timeout');
-    const isRetries = argsKeys.includes('retries');
-    const isNoColors = argsKeys.includes('noColors');
-
-    if (isTimeout || isRetries || isNoColors) {
-      console.error('\x1b[33m\x1b[1m\nProps `timeout`, `retries` & `noColors` must to be moved into the `mocha` object in the config.\x1b[0m');
-      console.error('\x1b[33m\x1b[1mPlease check the project README.\x1b[0m\n');
-
-      const argsTitles = [
-        ...(isTimeout ? [`"timeout": ${this.config.timeout}`] : []),
-        ...(isRetries ? [`"retries": ${this.config.retries}`] : []),
-        ...(isNoColors ? [`"noColors": ${this.config.noColors}`] : []),
-      ];
-
-      console.log('Passed config file \x1b[31m(deprecated)\x1b[0m:');
-      console.error(`\x1b[1m\n  {\n    ${argsTitles.join(',\n    ')}  \n  }\x1b[0m\n`);
-
-      console.log('Expected config file:');
-      console.error(`\x1b[1m\n  {\n    mocha: {\n      ${argsTitles.join(',\n      ')}\n    }  \n  }\x1b[0m\n`);
-    }
+    const { timeout = 30000, retries = 0, noColors, args: argsObject = {} } = mochaConfig;
 
     const args = [];
     args.push('--retries', retries);
