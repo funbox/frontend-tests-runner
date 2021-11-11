@@ -15,8 +15,9 @@
   "author": "FunBox LLC <wanted@fun-box.ru> (https://funbox.ru)",
   "license": "MIT",
   "scripts": {
-    "test": "mocha --timeout 10000 tests/SupervisedTestsRunner.test.js",
-    "lint": "eslint --cache --config .eslintrc.js ."
+    "lint": "eslint --cache --config .eslintrc.js .",
+    "prepublishOnly": "lawyer",
+    "test": "mocha --timeout 10000 tests/SupervisedTestsRunner.test.js"
   },
   "dependencies": {
     "fast-glob": "3.2.4",
