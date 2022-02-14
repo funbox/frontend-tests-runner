@@ -1,5 +1,3 @@
-/* global describe, it, beforeEach, afterEach */
-
 const fs = require('fs');
 const exec = require('child_process').execFileSync;
 const assert = require('assert');
