@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.1 (14.02.2022)
+
+Updated Mocha to v9.2 to fix [nanoid CVE](https://github.com/advisories/GHSA-qrpm-p2h7-hrv2).
+
+
 ## 4.0.0 (28.10.2021)
 
 We've updated Mocha to v9 and dropped old config format support. 
