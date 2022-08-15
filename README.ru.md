@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@funboxteam/frontend-tests-runner.svg)](https://www.npmjs.com/package/@funboxteam/frontend-tests-runner)
 
-Библиотека для запуска Mocha-тесты в несколько потоков и отслеживания изменений файлов в live-режиме.
+Библиотека для запуска Mocha-тестов в несколько потоков и отслеживания изменений файлов в live-режиме.
 
 ## Установка
 
