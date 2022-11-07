@@ -16,7 +16,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint --cache .",
-    "prepublishOnly": "lawyer",
+    "prepublishOnly": "if [ -z \"$CI\" ]; then lawyer; fi",
     "test": "mocha --timeout 10000 tests/SupervisedTestsRunner.test.js"
   },
   "dependencies": {
