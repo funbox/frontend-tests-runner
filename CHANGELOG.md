@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.0 (16.12.2022)
+
+Now `filterTestsFiles` callback accepts tests config as a third param.
+
+
 ## 4.0.1 (14.02.2022)
 
 Updated Mocha to v9.2 to fix [nanoid CVE](https://github.com/advisories/GHSA-qrpm-p2h7-hrv2).
