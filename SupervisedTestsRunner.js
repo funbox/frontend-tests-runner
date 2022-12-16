@@ -46,7 +46,7 @@ class SupervisedTestsRunner {
   startAllTests() {
     return this.calculateTestFiles().then(async ({ files, filterEnabled }) => {
       const testsForRun = this.config.filterTestsFiles
-        ? await this.config.filterTestsFiles(files, filterEnabled)
+        ? await this.config.filterTestsFiles(files, filterEnabled, this.config)
         : files;
 
       return this.testsRunner.runTestFiles(testsForRun);
