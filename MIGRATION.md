@@ -1,5 +1,13 @@
 # Migration
 
+## 4.1.0 → 5.0.0
+
+Mocha was updated to v10.2.0. Here's a link to a list of Mocha breaking changes:
+
+[v9 to v10](https://github.com/mochajs/mocha/blob/master/CHANGELOG.md#1000--2022-05-01)
+
+Node.js v12.x is no longer supported.
+
 ## 3.1.2 → 4.0.0
 
 There are two breaking changes: 
