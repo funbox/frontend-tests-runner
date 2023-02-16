@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.0 (16.02.2023)
+
+Updated Mocha to v10.2.0 to fix [minimatch ReDoS vulnerability](https://github.com/advisories/GHSA-f8q6-p94x-37v3).
+
+
 ## 4.1.0 (16.12.2022)
 
 Now `filterTestsFiles` callback accepts tests config as a third param.
