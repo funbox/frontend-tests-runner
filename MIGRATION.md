@@ -1,5 +1,13 @@
 # Migration
 
+## 4.1.0 → 5.0.0
+
+Mocha was updated to v10.2.0. Here's a link to a list of Mocha breaking changes:
+
+[v9 to v10](https://github.com/mochajs/mocha/blob/master/CHANGELOG.md#1000--2022-05-01)
+
+Node.js v12.x is no longer supported.
+
 ## 3.1.2 → 4.0.0
 
 There are two breaking changes: 
@@ -50,4 +58,4 @@ Mocha was updated to v9.1.3. Below you can find links to the breaking changes of
 - [v8 to v9](https://github.com/mochajs/mocha/blob/master/CHANGELOG.md#900--2021-06-07)
 
 But if you only used frontend-tests-runner “as is” without tweaking Mocha or the internals of this package,
-most probably you can updade without any problems.
+most probably you can update without any problems.
